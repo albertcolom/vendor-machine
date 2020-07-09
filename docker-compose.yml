@@ -1,0 +1,11 @@
+version: '3'
+services:
+  php:
+    container_name: php-vending-machine
+    build: ./docker/php/
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.1.110 remote_port=9001"
+      PHP_IDE_CONFIG: "serverName=docker-server"
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
