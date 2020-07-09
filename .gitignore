@@ -1,3 +1,6 @@
 .DS_Store
 .idea/
 /vendor/
+/var/data/*
+!/var/data/.gitkeep
+/.phpunit.result.cache
