@@ -52,6 +52,11 @@ class Catalog
         $this->product_lines[$product->productType()->value()]->removeQuantity($quantity);
     }
 
+    public function productLines(): array
+    {
+        return $this->product_lines;
+    }
+
     public function productLine(ProductType $product_type): ProductLine
     {
         return $this->product_lines[$product_type->value()];

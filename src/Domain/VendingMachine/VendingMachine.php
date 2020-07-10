@@ -83,6 +83,11 @@ class VendingMachine
         $this->machine_wallet->addCoin($coin, 1);
     }
 
+    public function status(): Status
+    {
+        return $this->status;
+    }
+
     public function catalog(): Catalog
     {
         return $this->catalog;

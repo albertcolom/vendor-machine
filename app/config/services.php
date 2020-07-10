@@ -4,10 +4,14 @@ use App\Application\VendingMachine\Command\CreateEmptyVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateVendingMachineCommand;
 use App\Application\VendingMachine\CreateEmptyVendingMachine;
 use App\Application\VendingMachine\CreateVendingMachine;
+use App\Application\VendingMachine\GetVendingMachineSummary;
+use App\Application\VendingMachine\Request\GetVendingMachineSummaryRequest;
 use App\Domain\VendingMachine\Repository\VendingMachineRepository;
 use App\Infrastructure\Repository\JsonVendingMachineRepository;
 use App\Infrastructure\Service\Bus\CommandBus;
+use App\Infrastructure\Service\Bus\QueryBus;
 use App\Infrastructure\Service\Bus\TacticianCommandBus;
+use App\Infrastructure\Service\Bus\TacticianQueryBus;
 use App\Infrastructure\Service\File\FileManager;
 use App\Infrastructure\Service\File\SystemFileManager;
 use App\Infrastructure\Service\Serialize\Serializer;
@@ -28,6 +32,10 @@ return [
         CreateVendingMachineCommand::class => CreateVendingMachine::class,
     ],
 
+    'query.handler.map' => [
+        GetVendingMachineSummaryRequest::class => GetVendingMachineSummary::class
+    ],
+
     'command.handler.middleware' => DI\factory(function (ContainerInterface $container) {
         return new CommandHandlerMiddleware(
             new ClassNameExtractor(),
@@ -36,7 +44,19 @@ return [
         );
     }),
 
+    'query.handler.middleware' => DI\factory(function (ContainerInterface $container) {
+        return new CommandHandlerMiddleware(
+            new ClassNameExtractor(),
+            new ContainerLocator($container, $container->get('query.handler.map')),
+            new HandleInflector()
+        );
+    }),
+
     CommandBus::class => DI\factory(function (ContainerInterface $container) {
         return new TacticianCommandBus([$container->get('command.handler.middleware')]);
+    }),
+
+    QueryBus::class => DI\factory(function (ContainerInterface $container) {
+        return new TacticianQueryBus([$container->get('query.handler.middleware')]);
     }),
 ];
