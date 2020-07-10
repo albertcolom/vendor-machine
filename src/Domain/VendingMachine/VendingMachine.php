@@ -67,6 +67,12 @@ class VendingMachine
         $this->status->buyProduct($this, $product);
     }
 
+    public function refund(): void
+    {
+        $this->machine_wallet->removeCoinsAmount($this->user_wallet->coinsAmount());
+        $this->user_wallet->reset();
+    }
+
     public function setStatus(Status $status): void
     {
         $this->status = $status;

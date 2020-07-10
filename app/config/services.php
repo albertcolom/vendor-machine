@@ -4,10 +4,12 @@ use App\Application\VendingMachine\AddCoinVendingMachine;
 use App\Application\VendingMachine\Command\AddCoinVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateEmptyVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateVendingMachineCommand;
+use App\Application\VendingMachine\Command\RefundUserWalletCommand;
 use App\Application\VendingMachine\Command\UserAddCoinVendingMachineCommand;
 use App\Application\VendingMachine\CreateEmptyVendingMachine;
 use App\Application\VendingMachine\CreateVendingMachine;
 use App\Application\VendingMachine\GetVendingMachineSummary;
+use App\Application\VendingMachine\RefundUserWallet;
 use App\Application\VendingMachine\Request\GetVendingMachineSummaryRequest;
 use App\Application\VendingMachine\UserAddCoinVendingMachine;
 use App\Domain\VendingMachine\Repository\VendingMachineRepository;
@@ -36,6 +38,7 @@ return [
         CreateVendingMachineCommand::class => CreateVendingMachine::class,
         UserAddCoinVendingMachineCommand::class => UserAddCoinVendingMachine::class,
         AddCoinVendingMachineCommand::class => AddCoinVendingMachine::class,
+        RefundUserWalletCommand::class => RefundUserWallet::class,
     ],
 
     'query.handler.map' => [
