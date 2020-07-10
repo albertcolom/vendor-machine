@@ -28,7 +28,7 @@ class Coin
         $this->type = $type;
     }
 
-    public static function fromString(float $type): self
+    public static function fromFloat(float $type): self
     {
         return new self($type);
     }
@@ -61,7 +61,7 @@ class Coin
     private function assertIsValidType(float $type): void
     {
         if (!in_array($type, self::VALID_TYPES, true)) {
-            throw InvalidCoinException::withCoinMessage($type);
+            throw InvalidCoinException::withCoinMessage($type, self::VALID_TYPES);
         }
     }
 }

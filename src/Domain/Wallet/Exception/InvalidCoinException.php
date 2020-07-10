@@ -9,8 +9,8 @@ use function sprintf;
 
 class InvalidCoinException extends Exception
 {
-    public static function withCoinMessage(float $coin_type): self
+    public static function withCoinMessage(float $coin_type, array $valid_types): self
     {
-        return new self(sprintf('%s is not a valid Coin', $coin_type));
+        return new self(sprintf('%s is not a valid Coin. Valid types: "%s"', $coin_type, implode(', ', $valid_types)));
     }
 }

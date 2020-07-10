@@ -1,11 +1,15 @@
 <?php
 
+use App\Application\VendingMachine\AddCoinVendingMachine;
+use App\Application\VendingMachine\Command\AddCoinVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateEmptyVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateVendingMachineCommand;
+use App\Application\VendingMachine\Command\UserAddCoinVendingMachineCommand;
 use App\Application\VendingMachine\CreateEmptyVendingMachine;
 use App\Application\VendingMachine\CreateVendingMachine;
 use App\Application\VendingMachine\GetVendingMachineSummary;
 use App\Application\VendingMachine\Request\GetVendingMachineSummaryRequest;
+use App\Application\VendingMachine\UserAddCoinVendingMachine;
 use App\Domain\VendingMachine\Repository\VendingMachineRepository;
 use App\Infrastructure\Repository\JsonVendingMachineRepository;
 use App\Infrastructure\Service\Bus\CommandBus;
@@ -30,6 +34,8 @@ return [
     'command.handler.map' => [
         CreateEmptyVendingMachineCommand::class => CreateEmptyVendingMachine::class,
         CreateVendingMachineCommand::class => CreateVendingMachine::class,
+        UserAddCoinVendingMachineCommand::class => UserAddCoinVendingMachine::class,
+        AddCoinVendingMachineCommand::class => AddCoinVendingMachine::class,
     ],
 
     'query.handler.map' => [

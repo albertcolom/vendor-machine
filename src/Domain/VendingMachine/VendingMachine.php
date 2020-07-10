@@ -78,7 +78,7 @@ class VendingMachine
         $this->machine_wallet->addCoin($coin, 1);
     }
 
-    public function addMachineChange(Coin $coin): void
+    public function addMachineCoin(Coin $coin): void
     {
         $this->machine_wallet->addCoin($coin, 1);
     }
