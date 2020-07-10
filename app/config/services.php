@@ -1,7 +1,9 @@
 <?php
 
 use App\Application\VendingMachine\AddCoinVendingMachine;
+use App\Application\VendingMachine\AddProductVendingMachine;
 use App\Application\VendingMachine\Command\AddCoinVendingMachineCommand;
+use App\Application\VendingMachine\Command\AddProductVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateEmptyVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateVendingMachineCommand;
 use App\Application\VendingMachine\Command\RefundUserWalletCommand;
@@ -39,6 +41,7 @@ return [
         UserAddCoinVendingMachineCommand::class => UserAddCoinVendingMachine::class,
         AddCoinVendingMachineCommand::class => AddCoinVendingMachine::class,
         RefundUserWalletCommand::class => RefundUserWallet::class,
+        AddProductVendingMachineCommand::class => AddProductVendingMachine::class,
     ],
 
     'query.handler.map' => [

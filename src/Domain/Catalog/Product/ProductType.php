@@ -54,7 +54,7 @@ class ProductType
     private function assertIsValidType(string $type): void
     {
         if (!in_array($type, self::VALID_TYPES, true)) {
-            throw InvalidProductTypeException::withProductTypeMessage($type);
+            throw InvalidProductTypeException::withProductTypeMessage($type, self::VALID_TYPES);
         }
     }
 }

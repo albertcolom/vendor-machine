@@ -14,7 +14,7 @@ class Product
     public function __construct(ProductType $product_type, ?string $name = null)
     {
         $this->product_type = $product_type;
-        $this->name = $name ?? $product_type->value();
+        $this->name = $name ?? ucfirst($product_type->value());
     }
 
     public function productType(): ProductType

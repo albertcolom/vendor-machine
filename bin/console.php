@@ -4,6 +4,7 @@
 require __DIR__ . '/../app/bootstrap.php';
 
 use App\Infrastructure\Ui\Cli\AddCoinMachineCommand;
+use App\Infrastructure\Ui\Cli\AddProductMachineCommand;
 use App\Infrastructure\Ui\Cli\CreateEmptyMachineCommand;
 use App\Infrastructure\Ui\Cli\CreateMachineCommand;
 use App\Infrastructure\Ui\Cli\GetMachineSummaryCommand;
@@ -19,5 +20,6 @@ $application->add($container->get(GetMachineSummaryCommand::class));
 $application->add($container->get(UserAddCoinMachineCommand::class));
 $application->add($container->get(AddCoinMachineCommand::class));
 $application->add($container->get(RefundUserMoneyCommand::class));
+$application->add($container->get(AddProductMachineCommand::class));
 
 $application->run();
