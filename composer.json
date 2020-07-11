@@ -8,6 +8,7 @@
     ],
     "require": {
         "php": ">=7.3",
+        "ext-json": "*",
         "php-di/php-di": "^6.2",
         "league/tactician-container": "^2.0",
         "zumba/json-serializer": "^2.2",

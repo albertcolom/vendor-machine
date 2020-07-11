@@ -9,7 +9,7 @@ use App\Domain\VendingMachine\VendingMachine;
 use App\Infrastructure\Service\File\SystemFileManager;
 use App\Infrastructure\Service\Serialize\Serializer;
 
-class JsonVendingMachineRepository implements VendingMachineRepository
+class JsonFileVendingMachineRepository implements VendingMachineRepository
 {
     private const JSON_PATH =  __DIR__ . '/../../../var/data/VendingMachine.json';
     /** @var SystemFileManager */

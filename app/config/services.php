@@ -16,12 +16,17 @@ use App\Application\VendingMachine\GetVendingMachineSummary;
 use App\Application\VendingMachine\RefundUserWallet;
 use App\Application\VendingMachine\Request\GetVendingMachineSummaryRequest;
 use App\Application\VendingMachine\UserAddCoinVendingMachine;
+use App\Application\Wallet\Event\WalletSubscriber;
+use App\Domain\Core\Event\Repository\EventRepository;
 use App\Domain\VendingMachine\Repository\VendingMachineRepository;
-use App\Infrastructure\Repository\JsonVendingMachineRepository;
+use App\Infrastructure\Repository\FileEventRepository;
+use App\Infrastructure\Repository\JsonFileVendingMachineRepository;
 use App\Infrastructure\Service\Bus\CommandBus;
+use App\Infrastructure\Service\Bus\Middleware\DomainEventsMiddleware;
 use App\Infrastructure\Service\Bus\QueryBus;
 use App\Infrastructure\Service\Bus\TacticianCommandBus;
 use App\Infrastructure\Service\Bus\TacticianQueryBus;
+use App\Infrastructure\Service\Event\EventDispatcher;
 use App\Infrastructure\Service\File\FileManager;
 use App\Infrastructure\Service\File\SystemFileManager;
 use App\Infrastructure\Service\Serialize\Serializer;
@@ -35,7 +40,8 @@ use Psr\Container\ContainerInterface;
 return [
     Serializer::class => DI\get(ZumbaJsonSerializer::class),
     FileManager::class => DI\get(SystemFileManager::class),
-    VendingMachineRepository::class => DI\get(JsonVendingMachineRepository::class),
+    VendingMachineRepository::class => DI\get(JsonFileVendingMachineRepository::class),
+    EventRepository::class => DI\get(FileEventRepository::class),
 
     'command.handler.map' => [
         CreateEmptyVendingMachineCommand::class => CreateEmptyVendingMachine::class,
@@ -50,6 +56,18 @@ return [
     'query.handler.map' => [
         GetVendingMachineSummaryRequest::class => GetVendingMachineSummary::class
     ],
+
+    'event.subscribers' => [
+        WalletSubscriber::class
+    ],
+
+    EventDispatcher::class => DI\factory(static function (ContainerInterface $container) {
+        $dispatcher = new EventDispatcher();
+        foreach ($container->get('event.subscribers') as $subscriber) {
+            $dispatcher->addSubscriber($container->get($subscriber));
+        }
+        return $dispatcher;
+    }),
 
     'command.handler.middleware' => DI\factory(static function (ContainerInterface $container) {
         return new CommandHandlerMiddleware(
@@ -68,7 +86,12 @@ return [
     }),
 
     CommandBus::class => DI\factory(static function (ContainerInterface $container) {
-        return new TacticianCommandBus([$container->get('command.handler.middleware')]);
+        return new TacticianCommandBus(
+            [
+                $container->get(DomainEventsMiddleware::class),
+                $container->get('command.handler.middleware')
+            ]
+        );
     }),
 
     QueryBus::class => DI\factory(static function (ContainerInterface $container) {

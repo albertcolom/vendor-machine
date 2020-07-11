@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Wallet\Coin;
 
+use App\Domain\Core\Event\DomainEventRecorder;
+use App\Domain\Wallet\Event\CoinAmountWasCreated;
+use App\Domain\Wallet\Event\CoinAmountWasIncremented;
 use App\Domain\Wallet\Exception\NotEnoughMoneyException;
 
 class CoinAmount
@@ -17,6 +20,8 @@ class CoinAmount
     {
         $this->coin = $coin;
         $this->quantity = $quantity;
+
+        DomainEventRecorder::instance()->record(new CoinAmountWasCreated($coin->value(), $quantity));
     }
 
     public function coin(): Coin
@@ -37,6 +42,8 @@ class CoinAmount
     public function addQuantity(int $quantity): void
     {
         $this->quantity += $quantity;
+
+        DomainEventRecorder::instance()->record(new CoinAmountWasIncremented($this->coin->value(), $quantity));
     }
 
     public function removeQuantity(int $quantity): void

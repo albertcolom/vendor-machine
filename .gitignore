@@ -3,5 +3,7 @@
 /vendor/
 /var/data/*
 !/var/data/.gitkeep
+/var/log/*
+!/var/log/.gitkeep
 /.phpunit.result.cache
 /bin/phpunit
