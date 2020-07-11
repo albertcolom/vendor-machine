@@ -2,8 +2,10 @@
 
 use App\Application\VendingMachine\AddCoinVendingMachine;
 use App\Application\VendingMachine\AddProductVendingMachine;
+use App\Application\VendingMachine\BuyProductVendingMachine;
 use App\Application\VendingMachine\Command\AddCoinVendingMachineCommand;
 use App\Application\VendingMachine\Command\AddProductVendingMachineCommand;
+use App\Application\VendingMachine\Command\BuyProductVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateEmptyVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateVendingMachineCommand;
 use App\Application\VendingMachine\Command\RefundUserWalletCommand;
@@ -42,13 +44,14 @@ return [
         AddCoinVendingMachineCommand::class => AddCoinVendingMachine::class,
         RefundUserWalletCommand::class => RefundUserWallet::class,
         AddProductVendingMachineCommand::class => AddProductVendingMachine::class,
+        BuyProductVendingMachineCommand::class => BuyProductVendingMachine::class,
     ],
 
     'query.handler.map' => [
         GetVendingMachineSummaryRequest::class => GetVendingMachineSummary::class
     ],
 
-    'command.handler.middleware' => DI\factory(function (ContainerInterface $container) {
+    'command.handler.middleware' => DI\factory(static function (ContainerInterface $container) {
         return new CommandHandlerMiddleware(
             new ClassNameExtractor(),
             new ContainerLocator($container, $container->get('command.handler.map')),
@@ -56,7 +59,7 @@ return [
         );
     }),
 
-    'query.handler.middleware' => DI\factory(function (ContainerInterface $container) {
+    'query.handler.middleware' => DI\factory(static function (ContainerInterface $container) {
         return new CommandHandlerMiddleware(
             new ClassNameExtractor(),
             new ContainerLocator($container, $container->get('query.handler.map')),
@@ -64,11 +67,11 @@ return [
         );
     }),
 
-    CommandBus::class => DI\factory(function (ContainerInterface $container) {
+    CommandBus::class => DI\factory(static function (ContainerInterface $container) {
         return new TacticianCommandBus([$container->get('command.handler.middleware')]);
     }),
 
-    QueryBus::class => DI\factory(function (ContainerInterface $container) {
+    QueryBus::class => DI\factory(static function (ContainerInterface $container) {
         return new TacticianQueryBus([$container->get('query.handler.middleware')]);
     }),
 ];

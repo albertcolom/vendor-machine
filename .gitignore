@@ -4,3 +4,4 @@
 /var/data/*
 !/var/data/.gitkeep
 /.phpunit.result.cache
+/bin/phpunit

@@ -10,6 +10,6 @@ class NoChangeMachineException extends Exception
 {
     public static function withMessage(): self
     {
-        return new self('You can not buy the machine does not have any product');
+        return new self('The machine doesn\'t have change. Please insert the exact money');
     }
 }

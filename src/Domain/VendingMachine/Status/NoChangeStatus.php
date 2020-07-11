@@ -18,6 +18,7 @@ class NoChangeStatus implements Status
             throw NoChangeMachineException::withMessage();
         }
 
+        $context->userWallet()->reset();
         $context->catalog()->removeProduct($product, 1);
     }
 
