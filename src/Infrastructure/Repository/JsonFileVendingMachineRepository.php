@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\VendingMachine\Exception\VendingMachineNotFoundException;
 use App\Domain\VendingMachine\Repository\VendingMachineRepository;
 use App\Domain\VendingMachine\VendingMachine;
 use App\Infrastructure\Service\File\SystemFileManager;
@@ -25,7 +26,13 @@ class JsonFileVendingMachineRepository implements VendingMachineRepository
 
     public function get(): VendingMachine
     {
-        return $this->serializer->unSerialize($this->system_file_manager->getContent(self::JSON_PATH));
+        $content = $this->system_file_manager->getContent(self::JSON_PATH);
+
+        if (empty($content)) {
+            throw VendingMachineNotFoundException::withMessage();
+        }
+
+        return $this->serializer->unSerialize($content);
     }
 
     public function persist(VendingMachine $vending_machine): void
