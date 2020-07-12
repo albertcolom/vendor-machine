@@ -44,7 +44,7 @@ class UpdateStatusVendingMachineTest extends TestCase
 
         $this->mocked_vending_machine_repository->expects($this->once())->method('get')->willReturn(VendingMachine::empty());
         $this->mocked_status_factory->expects($this->once())->method('build')->willReturn(new ReadyStatus());
-        $this->mocked_vending_machine_repository->expects($this->never())->method('persist')->with($expected_machine);
+        $this->mocked_vending_machine_repository->expects($this->once())->method('persist')->with($expected_machine);
 
         $sut = new UpdateStatusVendingMachine($this->mocked_vending_machine_repository, $this->mocked_status_factory);
         $sut->handle();
