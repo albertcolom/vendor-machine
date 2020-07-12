@@ -8,6 +8,10 @@ use App\Domain\Catalog\Catalog;
 use App\Domain\Catalog\Product\Product;
 use App\Domain\Catalog\Product\ProductLine;
 use App\Domain\Catalog\Product\ProductType;
+use App\Domain\Core\Event\DomainEventRecorder;
+use App\Domain\VendingMachine\Event\EmptyVendingMachineWasCreated;
+use App\Domain\VendingMachine\Event\StatusWasUpdated;
+use App\Domain\VendingMachine\Event\VendingMachineWasCreated;
 use App\Domain\VendingMachine\Status\NoProductStatus;
 use App\Domain\VendingMachine\Status\ReadyStatus;
 use App\Domain\VendingMachine\Status\Status;
@@ -36,7 +40,11 @@ class VendingMachine
 
     public static function empty(): self
     {
-        return new self(new NoProductStatus(), Catalog::empty(), Wallet::empty(), Wallet::empty());
+        $vending_machine = new self(new NoProductStatus(), Catalog::empty(), Wallet::empty(), Wallet::empty());
+
+        DomainEventRecorder::instance()->record(new EmptyVendingMachineWasCreated());
+
+        return $vending_machine;
     }
 
     public static function withCatalogAndChange(): self
@@ -54,7 +62,11 @@ class VendingMachine
             new CoinAmount(Coin::withOne(), 1),
         ] ;
 
-        return new self(new ReadyStatus(), new Catalog($products_line), new Wallet($coins_amount), Wallet::empty());
+        $vending_machine = new self(new ReadyStatus(), new Catalog($products_line), new Wallet($coins_amount), Wallet::empty());
+
+        DomainEventRecorder::instance()->record(new VendingMachineWasCreated());
+
+        return $vending_machine;
     }
 
     public function addProduct(Product $product, float $price, int $quantity = 1): void
@@ -80,13 +92,13 @@ class VendingMachine
 
     public function addUserCoin(Coin $coin): void
     {
-        $this->user_wallet->addCoin($coin, 1);
-        $this->machine_wallet->addCoin($coin, 1);
+        $this->user_wallet->addCoinAmount(new CoinAmount($coin, 1));
+        $this->machine_wallet->addCoinAmount(new CoinAmount($coin, 1));
     }
 
     public function addMachineCoin(Coin $coin): void
     {
-        $this->machine_wallet->addCoin($coin, 1);
+        $this->machine_wallet->addCoinAmount(new CoinAmount($coin, 1));
     }
 
     public function status(): Status

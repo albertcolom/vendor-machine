@@ -24,7 +24,7 @@ class Wallet
         $this->coins_amount = [];
         /** @var CoinAmount $coin_amount */
         foreach ($coins_amount as $coin_amount) {
-            $this->addCoin($coin_amount->coin(), $coin_amount->quantity());
+            $this->addCoinAmount($coin_amount);
         }
     }
 
@@ -33,14 +33,14 @@ class Wallet
         return new self([]);
     }
 
-    public function addCoin(Coin $coin, int $quantity): void
+    public function addCoinAmount(CoinAmount $coin_amount): void
     {
-        if ($this->coinAlreadyExist($coin)) {
-            $this->coins_amount[(string)$coin->value()]->addQuantity($quantity);
+        if ($this->coinAlreadyExist($coin_amount->coin())) {
+            $this->coins_amount[(string)$coin_amount->coin()->value()]->addQuantity($coin_amount->quantity());
             return;
         }
 
-        $this->coins_amount[(string)$coin->value()] = new CoinAmount($coin, $quantity);
+        $this->coins_amount[(string)$coin_amount->coin()->value()] = $coin_amount;
     }
 
     public function getChange(float $amount): Wallet
@@ -65,7 +65,7 @@ class Wallet
 
             $coin_number = (int)floor(round($remain / $coin_amount->coin()->value(), 2));
             $coin_number = ($coin_number <= $coin_amount->quantity()) ? $coin_number : $coin_amount->quantity();
-            $change_Wallet->addCoin($coin_amount->coin(), $coin_number);
+            $change_Wallet->addCoinAmount(new CoinAmount($coin_amount->coin(), $coin_number));
             $remain -= round($coin_amount->coin()->value() * $coin_number, 2);
 
             if (0.0 === $remain) {

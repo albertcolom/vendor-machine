@@ -10,6 +10,7 @@ use App\Domain\Catalog\Product\Product;
 use App\Domain\Catalog\Product\ProductLine;
 use App\Domain\Catalog\Product\ProductType;
 use function array_key_exists;
+use function array_reduce;
 
 class Catalog
 {
@@ -55,6 +56,13 @@ class Catalog
     public function productLines(): array
     {
         return $this->product_lines;
+    }
+
+    public function totalProducts(): int
+    {
+        return array_reduce($this->product_lines, static function($total, ProductLine $product_line) {
+            return $total + $product_line->quantity();
+        }, 0);
     }
 
     public function productLine(ProductType $product_type): ProductLine

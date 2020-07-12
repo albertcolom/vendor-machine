@@ -43,7 +43,7 @@ class GetMachineSummaryCommand extends Command
             /** @var GetVendingMachineSummaryResponse $response */
             $response = $this->query_bus->handle(new GetVendingMachineSummaryRequest());
 
-            $output->writeln(sprintf('<info>STATUS: %s</info>', $response->statusName()));
+            $output->writeln(sprintf('<fg=black;bg=cyan>STATUS: %s</>', $response->statusName()));
 
             $this->renderTableCatalogSummary($response->catalog(), $output);
             $this->renderTableWalletSummary($response->machineWallet(), 'Machine Wallet', $output);

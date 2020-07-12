@@ -1,5 +1,6 @@
 <?php
 
+use App\Application\Catalog\Subscriber\CatalogSubscriber;
 use App\Application\VendingMachine\AddCoinVendingMachine;
 use App\Application\VendingMachine\AddProductVendingMachine;
 use App\Application\VendingMachine\BuyProductVendingMachine;
@@ -9,14 +10,16 @@ use App\Application\VendingMachine\Command\BuyProductVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateEmptyVendingMachineCommand;
 use App\Application\VendingMachine\Command\CreateVendingMachineCommand;
 use App\Application\VendingMachine\Command\RefundUserWalletCommand;
+use App\Application\VendingMachine\Command\UpdateStatusVendingMachineCommand;
 use App\Application\VendingMachine\Command\UserAddCoinVendingMachineCommand;
 use App\Application\VendingMachine\CreateEmptyVendingMachine;
 use App\Application\VendingMachine\CreateVendingMachine;
 use App\Application\VendingMachine\GetVendingMachineSummary;
 use App\Application\VendingMachine\RefundUserWallet;
 use App\Application\VendingMachine\Request\GetVendingMachineSummaryRequest;
+use App\Application\VendingMachine\UpdateStatusVendingMachine;
 use App\Application\VendingMachine\UserAddCoinVendingMachine;
-use App\Application\Wallet\Event\WalletSubscriber;
+use App\Application\Wallet\Subscriber\WalletSubscriber;
 use App\Domain\Core\Event\Repository\EventRepository;
 use App\Domain\VendingMachine\Repository\VendingMachineRepository;
 use App\Infrastructure\Repository\FileEventRepository;
@@ -51,6 +54,7 @@ return [
         RefundUserWalletCommand::class => RefundUserWallet::class,
         AddProductVendingMachineCommand::class => AddProductVendingMachine::class,
         BuyProductVendingMachineCommand::class => BuyProductVendingMachine::class,
+        UpdateStatusVendingMachineCommand::class => UpdateStatusVendingMachine::class,
     ],
 
     'query.handler.map' => [
@@ -58,7 +62,8 @@ return [
     ],
 
     'event.subscribers' => [
-        WalletSubscriber::class
+        WalletSubscriber::class,
+        CatalogSubscriber::class,
     ],
 
     EventDispatcher::class => DI\factory(static function (ContainerInterface $container) {

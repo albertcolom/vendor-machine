@@ -6,7 +6,7 @@ namespace App\Domain\Wallet\Event;
 
 use App\Domain\Core\Event\DomainEvent;
 
-class CoinAmountWasIncremented extends DomainEvent
+class CoinAmountWasRemoved extends DomainEvent
 {
     /** @var float */
     private $coin_type;

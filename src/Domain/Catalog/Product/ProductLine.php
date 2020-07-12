@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Catalog\Product;
 
+use App\Domain\Catalog\Event\ProductLineWasCreated;
+use App\Domain\Catalog\Event\ProductLineWasRemoved;
 use App\Domain\Catalog\Exception\NotEnoughQuantityException;
+use App\Domain\Core\Event\DomainEventRecorder;
 
 class ProductLine
 {
@@ -20,6 +23,10 @@ class ProductLine
         $this->product = $product;
         $this->price = $price;
         $this->quantity = $quantity;
+
+        DomainEventRecorder::instance()->record(
+            new ProductLineWasCreated($this->product->productType()->value(), $this->price(), $this->quantity())
+        );
     }
 
     public function addQuantity(int $quantity): void
@@ -34,6 +41,10 @@ class ProductLine
         }
 
         $this->quantity -= $quantity;
+
+        DomainEventRecorder::instance()->record(
+            new ProductLineWasRemoved($this->product->productType()->value(), $this->price(), $this->quantity())
+        );
     }
 
     public function product(): Product
