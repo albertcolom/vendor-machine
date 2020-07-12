@@ -36,6 +36,7 @@ class CreateEmptyMachineCommand extends Command
             $this->command_bus->handle(new CreateEmptyVendingMachineCommand());
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         $output->writeln('<info>Empty vending machine was created</info>');

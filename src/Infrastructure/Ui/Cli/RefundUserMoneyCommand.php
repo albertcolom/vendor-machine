@@ -36,6 +36,7 @@ class RefundUserMoneyCommand extends Command
             $this->command_bus->handle(new RefundUserWalletCommand());
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         $output->writeln('<info>The coins was refunded</info>');

@@ -51,6 +51,7 @@ class GetMachineSummaryCommand extends Command
 
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         return 0;

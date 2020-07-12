@@ -42,6 +42,7 @@ class AddProductMachineCommand extends Command
             $this->command_bus->handle(new AddProductVendingMachineCommand($product_type, $price));
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         $output->writeln('<info>The product was added</info>');

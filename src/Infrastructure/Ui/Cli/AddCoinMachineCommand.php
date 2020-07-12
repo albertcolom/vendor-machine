@@ -40,6 +40,7 @@ class AddCoinMachineCommand extends Command
             $this->command_bus->handle(new AddCoinVendingMachineCommand($coin));
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         $output->writeln('<info>The coin was added</info>');

@@ -41,6 +41,7 @@ class BuyProductMachineCommand extends Command
             $this->command_bus->handle(new BuyProductVendingMachineCommand($product_type));
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         $output->writeln('<info>The product was purchased</info>');

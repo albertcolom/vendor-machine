@@ -36,6 +36,7 @@ class CreateMachineCommand extends Command
             $this->command_bus->handle(new CreateVendingMachineCommand());
         } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
         }
 
         $output->writeln('<info>Vending machine was created</info>');
