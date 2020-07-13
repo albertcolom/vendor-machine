@@ -9,13 +9,67 @@
 - [x] **DDD** (Domain Driver Design)
 - [x] ***Dependency injection*** and container with [PHP-DI](http://php-di.org/)
 - [x] ***CommandBus*** and ***CommandQuery*** with [Tactician](https://tactician.thephpleague.com)
-- [x] Unit testing with [PHPUnit](https://phpunit.de/)
 - [x] Implement **DomainEvents**
 - [x] Implement **Subscriber** to update vending machine status
+- [x] Implement **Middleware** to dispatch and persist domain events
 - [x] Simple **EventStore** (var/log/domain_events.log)
+- [x] Unit testing with [PHPUnit](https://phpunit.de/)
 - [x] Simple **Repository** with json file and serialize entity with [json-serializer](https://github.com/zumba/json-serializer)
 - [x] **CLI** with [Symfony console](https://symfony.com/doc/current/components/console.html)
 
+### Project folder structure
+```sh
+.
+├── app
+│   └── config
+├── bin
+├── docker
+│   └── php
+├── src
+│   ├── Application
+│   │   ├── Catalog
+│   │   │   └── Subscriber
+│   │   ├── VendingMachine
+│   │   │   ├── Command
+│   │   │   ├── Request
+│   │   │   └── Response
+│   │   └── Wallet
+│   │       └── Subscriber
+│   ├── Domain
+│   │   ├── Catalog
+│   │   │   ├── Event
+│   │   │   ├── Exception
+│   │   │   └── Product
+│   │   ├── Core
+│   │   │   └── Event
+│   │   │       └── Repository
+│   │   ├── VendingMachine
+│   │   │   ├── Event
+│   │   │   ├── Exception
+│   │   │   ├── Repository
+│   │   │   └── Status
+│   │   └── Wallet
+│   │       ├── Coin
+│   │       ├── Event
+│   │       └── Exception
+│   └── Infrastructure
+│       ├── Repository
+│       ├── Service
+│       │   ├── Bus
+│       │   │   └── Middleware
+│       │   ├── Event
+│       │   ├── File
+│       │   └── Serialize
+│       └── Ui
+│           └── Cli
+├── tests
+│   └── unit
+│       └── Application
+│           └── VendingMachine
+└── var
+    ├── data
+    └── log
+```
 ### Installation
 
 Clone this repository
